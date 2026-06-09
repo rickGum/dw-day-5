@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Scores</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <div>
+      <nav
+        class="navbar navbar-expand navbar-primary bg-primary d-flex px-3 gap-1"
+      >
+        <i class="fa-solid fa-graduation-cap fa-lg text-white"></i>
+        <h5 class="navbar-brand text-white" href="#">Student Dashboard</h5>
+      </nav>
+    </div>
+    <div class="container py-5">
+      <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6>Data Siswa</h6>
+
+          <div class="input-group" style="width: 250px">
+            <span class="input-group-text">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              id="searchInput"
+              type="text"
+              class="form-control"
+              placeholder="Cari siswa..."
+            />
+          </div>
+        </div>
+        <div class="pt-2">
+          <table class="table table-striped text-center align-middle pt-">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Kelas</th>
+                <th scope="col">Nilai(Score)</th>
+              </tr>
+            </thead>
+            <tbody id="tableSiswa"></tbody>
+          </table>
+        </div>
+        <div class="pt-2 d-flex justify-content-end">
+          <h6>
+            Rata-rata nilai kelas
+            <span class="badge bg-primary" id="avg"></span>
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const siswa = [
+        {
+          No: 1,
+          Nama: "budi",
+          Kelas: "front end",
+          Nilai: 60,
+        },
+        {
+          No: 2,
+          Nama: "rizky",
+          Kelas: "backe end end",
+          Nilai: 50,
+        },
+        {
+          No: 3,
+          Nama: "santika",
+          Kelas: "full stack",
+          Nilai: 70,
+        },
+        {
+          No: 4,
+          Nama: "jeremy",
+          Kelas: "front end",
+          Nilai: 75,
+        },
+        {
+          No: 5,
+          Nama: "devi",
+          Kelas: "front end",
+          Nilai: 80,
+        },
+        {
+          No: 6,
+          Nama: "asep",
+          Kelas: "back end",
+          Nilai: 57,
+        },
+        {
+          No: 7,
+          Nama: "wira",
+          Kelas: "front end",
+          Nilai: 90,
+        },
+        {
+          No: 8,
+          Nama: "laksono",
+          Kelas: "front end",
+          Nilai: 85,
+        },
+        {
+          No: 9,
+          Nama: "putra",
+          Kelas: "back end",
+          Nilai: 70,
+        },
+        {
+          No: 10,
+          Nama: "rudy",
+          Kelas: "full stack dev",
+          Nilai: 75,
+        },
+      ];
+
+      const tableSiswa = document.getElementById("tableSiswa");
+      const searchInput = document.getElementById("searchInput");
+      const avg = document.getElementById("avg");
+
+      const renderTable = (data) => {
+        tableSiswa.innerHTML = "";
+
+        data.forEach((item) => {
+          let badgeClass = "";
+
+          if (item.Nilai < 70) {
+            badgeClass = "bg-danger";
+          } else if (item.Nilai < 80) {
+            badgeClass = "bg-warning";
+          } else {
+            badgeClass = "bg-success";
+          }
+          tableSiswa.innerHTML += `
+      <tr>
+        <th scope="row">${item.No}</th>
+        <td>${item.Nama}</td>
+        <td>
+          <span class="badge bg-secondary">${item.Kelas}</span>
+        </td>
+        <td>
+          <span class="badge ${badgeClass}">${item.Nilai}</span>
+        </td>
+      </tr>
+    `;
+        });
+      };
+
+      renderTable(siswa);
+
+      searchInput.addEventListener("input", () => {
+        const keyword = searchInput.value.toLowerCase();
+
+        const hasilFilter = siswa.filter((item) =>
+          item.Nama.toLowerCase().includes(keyword),
+        );
+
+        renderTable(hasilFilter);
+      });
+
+      let totalNilai = 0;
+
+      siswa.forEach((item) => {
+        totalNilai += item.Nilai;
+      });
+      const rataRata = totalNilai / siswa.length;
+
+      avg.textContent = rataRata.toFixed(2);
+    </script>
+  </body>
+</html>
