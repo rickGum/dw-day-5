@@ -133,33 +133,32 @@
       const avg = document.getElementById("avg");
 
       const renderTable = (data) => {
-        tableSiswa.innerHTML = "";
+        tableSiswa.innerHTML = data
+          .map((item) => {
+            let badgeClass = "";
 
-        data.forEach((item) => {
-          let badgeClass = "";
-
-          if (item.Nilai < 70) {
-            badgeClass = "bg-danger";
-          } else if (item.Nilai < 80) {
-            badgeClass = "bg-warning";
-          } else {
-            badgeClass = "bg-success";
-          }
-          tableSiswa.innerHTML += `
-      <tr>
-        <th scope="row">${item.No}</th>
-        <td>${item.Nama}</td>
-        <td>
-          <span class="badge bg-secondary">${item.Kelas}</span>
-        </td>
-        <td>
-          <span class="badge ${badgeClass}">${item.Nilai}</span>
-        </td>
-      </tr>
-    `;
-        });
+            if (item.Nilai < 70) {
+              badgeClass = "bg-danger";
+            } else if (item.Nilai < 80) {
+              badgeClass = "bg-warning";
+            } else {
+              badgeClass = "bg-success";
+            }
+            return `
+        <tr>
+          <th scope="row">${item.No}</th>
+          <td>${item.Nama}</td>
+          <td>
+            <span class="badge bg-secondary">${item.Kelas}</span>
+          </td>
+          <td>
+            <span class="badge ${badgeClass}">${item.Nilai}</span>
+          </td>
+        </tr>
+      `;
+          })
+          .join("");
       };
-
       renderTable(siswa);
 
       searchInput.addEventListener("input", () => {
@@ -172,13 +171,11 @@
         renderTable(hasilFilter);
       });
 
-      let totalNilai = 0;
+      const totalNilai = siswa.reduce((total, item) => {
+        return total + item.Nilai;
+      }, 0);
 
-      siswa.forEach((item) => {
-        totalNilai += item.Nilai;
-      });
       const rataRata = totalNilai / siswa.length;
-
       avg.textContent = rataRata.toFixed(2);
     </script>
   </body>
